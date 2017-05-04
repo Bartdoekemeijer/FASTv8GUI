@@ -180,6 +180,7 @@ function SaveProject_Callback(hObject, eventdata, handles)
 
 % Dialogue box
 [FileName,PathName] = uiputfile('*.mat', 'Save turbine');
+saveFilePath = [PathName,FileName];
 if FileName
     % Get turbine geometry from handles
     Blade = handles.Blade;
@@ -201,7 +202,7 @@ if FileName
     % Save project
     if not(get(handles.StandaloneMatFile(2), 'Value'))
         
-        save([PathName,FileName], ...
+        save(saveFilePath, ...
             'Blade', ...
             'Airfoil', ...
             'Tower', ...
@@ -212,11 +213,7 @@ if FileName
             'CertificationSettings')
         disp('Normal mat-file saved!')
     else
-        RunCertification(handles);
-        
-        % Save the complete workspace to a standalone matfile
-        evalin('base', ['save(''', [PathName,FileName] ''')']);
-        disp('Standalone mat-file saved!')
+        RunCertification(handles, saveFilePath, true);
     end
 
 end
@@ -3198,7 +3195,8 @@ guidata(hObject, handles);
 
 % --- Executes on button press in StandaloneMatFile.
 function StandaloneMatFile_Callback(hObject, eventdata, handles)
-% hObject    handle to StandaloneMatFile (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-% Hint: get(hObject,'Value') returns toggle state of StandaloneMatFile
+if get(hObject, 'Value') == 1
+    set(handles.Certification, 'Enable', 'off')
+else
+    set(handles.Certification, 'Enable', 'on')
+end
