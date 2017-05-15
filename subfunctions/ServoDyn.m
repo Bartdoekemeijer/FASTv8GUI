@@ -94,11 +94,11 @@ fprintf(fid, ' %5.1f      HSSBrTqF    - Fully deployed HSS-brake torque (N-m)\n'
 fprintf(fid, '---------------------- NACELLE-YAW CONTROL -------------------------------------\n');
 fprintf(fid, '          0   YCMode       - Yaw control mode {0: none, 3: user-defined from routine UserYawCont, 4: user-defined from Simulink/Labview, 5: user-defined from Bladed-style DLL} (switch)\n');
 fprintf(fid, '     9999.9   TYCOn        - Time to enable active yaw control (s) [unused when YCMode=0]\n');
-fprintf(fid, '          0   YawNeut      - Neutral yaw position--yaw spring force is zero at this yaw (degrees)\n');
+fprintf(fid, '         %s   YawNeut      - Neutral yaw position--yaw spring force is zero at this yaw (degrees)\n', num2str(Control.Yaw.NeutralAngle));
 fprintf(fid, '9.02832E+09   YawSpr       - Nacelle-yaw spring constant (N-m/rad)\n');
 fprintf(fid, '  1.916E+07   YawDamp      - Nacelle-yaw damping constant (N-m/(rad/s))\n');
 fprintf(fid, '     9999.9   TYawManS     - Time to start override yaw maneuver and end standard yaw control (s)\n');
-fprintf(fid, '          2   YawManRat    - Yaw maneuver rate (in absolute value) (deg/s)\n');
+fprintf(fid, '         %s   YawManRat    - Yaw maneuver rate (in absolute value) (deg/s)\n', num2str(Control.Yaw.Speed));
 fprintf(fid, '          0   NacYawF      - Final yaw angle for override yaw maneuvers (degrees)\n');
 fprintf(fid, '---------------------- TUNED MASS DAMPER ---------------------------------------\n');
 fprintf(fid, 'False         CompNTMD     - Compute nacelle tuned mass damper {true/false} (flag)\n');

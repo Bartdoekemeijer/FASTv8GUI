@@ -59,6 +59,8 @@ set(handles.Pitch_StartupPitchRate_textbox, 'String', num2str(handles.Control.Pi
 set(handles.Pitch_StartupSpeed_textbox, 'String', num2str(handles.Control.Pitch.StartupSpeed));
 set(handles.ForeAft_MaxPitchAmplitude_textbox, 'String', num2str(handles.Control.ForeAft.MaxPitchAmplitude));
 set(handles.ForeAft_Gain_textbox, 'String', num2str(handles.Control.ForeAft.Gain));
+set(handles.Yaw_NeutralAngle_textbox, 'String', num2str(handles.Control.Yaw.NeutralAngle));
+set(handles.Yaw_Speed_textbox, 'String', num2str(handles.Control.Yaw.Speed));
 
 % Update handles structure
 guidata(hObject, handles);
@@ -476,6 +478,30 @@ end
 handles.Control.ForeAft.MaxPitchAmplitude = str2double(get(hObject,'String'));
 guidata(hObject, handles);
 function ForeAft_MaxPitchAmplitude_textbox_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+%% Yaw control - Neutral angle - text box
+function Yaw_NeutralAngle_textbox_Callback(hObject, eventdata, handles)
+if isnan(str2double(get(hObject,'String')))
+    set(hObject, 'String', num2str(handles.Control.Yaw.NeutralAngle))
+end
+handles.Control.Yaw.NeutralAngle = str2double(get(hObject,'String'));
+guidata(hObject, handles);
+function Yaw_NeutralAngle_textbox_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+%% Yaw control - Speed - text box
+function Yaw_Speed_textbox_Callback(hObject, eventdata, handles)
+if isnan(str2double(get(hObject,'String')))
+    set(hObject, 'String', num2str(handles.Control.Yaw.Speed))
+end
+handles.Control.Yaw.Speed = str2double(get(hObject,'String'));
+guidata(hObject, handles);
+function Yaw_Speed_textbox_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
