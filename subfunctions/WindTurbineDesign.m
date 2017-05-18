@@ -180,8 +180,8 @@ function SaveProject_Callback(hObject, eventdata, handles)
 
 % Dialogue box
 [FileName,PathName] = uiputfile('*.mat', 'Save turbine');
-saveFilePath = [PathName,FileName];
 if FileName
+    
     % Get turbine geometry from handles
     Blade = handles.Blade;
     Airfoil = handles.Airfoil;
@@ -200,21 +200,15 @@ if FileName
         get(handles.TowerColor, 'Value')];
     
     % Save project
-    if not(get(handles.StandaloneMatFile(2), 'Value'))
-        
-        save(saveFilePath, ...
-            'Blade', ...
-            'Airfoil', ...
-            'Tower', ...
-            'Nacelle', ...
-            'Drivetrain', ...
-            'Control', ...
-            'Appearance', ...
-            'CertificationSettings')
-        disp('Normal mat-file saved!')
-    else
-        RunCertification(handles, saveFilePath, true);
-    end
+    save([PathName,FileName], ...
+        'Blade', ...
+        'Airfoil', ...
+        'Tower', ...
+        'Nacelle', ...
+        'Drivetrain', ...
+        'Control', ...
+        'Appearance', ...
+        'CertificationSettings')
 
 end
 
@@ -2419,7 +2413,7 @@ if get(handles.Animate, 'Value')
     set(handles.Animate, 'Value', 0);
 end
 
-% Show or hide straks
+% Show or hide streaks
 if get(hObject, 'Value')
 	Parts = get(handles.TurbinePlot, 'Children');
     for i = length(Parts)-2:-1:length(Parts)-11
@@ -2512,7 +2506,7 @@ while get(hObject,'Value')
             'ZData', reshape(A(3,:),N) + Tower.HubHeight);
     end
     
-    % Animate wind Streaks
+    % Animate wind streaks
     if get(handles.Streaks, 'Value')
         for i = length(Parts)-2:-1:length(Parts)-11
             streak = Parts(i);
@@ -3015,7 +3009,7 @@ TSR = RPM*(2*pi/60)*Blade.Radius(end)./U;
 CP = interp1(TSRi, CP, TSR);
 
 % Rated power
-Prated = Control.Torque.SpeedC*(2*pi/60) *  Control.Torque.Demanded * Drivetrain.Gearbox.Efficiency * Drivetrain.Generator.Efficiency;
+Prated = Control.Torque.SpeedC*(2*pi/60) *  Control.Torque.Demanded * Drivetrain.Generator.Efficiency;
 
 % Power curve
 P = 0.5 * 1.225 * pi*Blade.Radius(end)^2 * U.^3 .* CP .* Drivetrain.Gearbox.Efficiency .* Drivetrain.Generator.Efficiency;
@@ -3191,12 +3185,3 @@ end
 
 % Update handles structure
 guidata(hObject, handles);
-
-
-% --- Executes on button press in StandaloneMatFile.
-function StandaloneMatFile_Callback(hObject, eventdata, handles)
-if get(hObject, 'Value') == 1
-    set(handles.Certification, 'Enable', 'off')
-else
-    set(handles.Certification, 'Enable', 'on')
-end
